@@ -10,8 +10,8 @@ export default function Footer() {
             <div className='flex items-center gap-2'>
               <Link href={'/'}>
                 <Image
-                  src={'/logo.png'}
-                  alt='Atlas Esim Logo'
+                  src={'/logo3.JPG'}
+                  alt='UB sim Logo'
                   width={150}
                   height={150}
                 />
@@ -41,7 +41,7 @@ export default function Footer() {
                 </svg>
               </Link>
               <Link
-                href='https://www.instagram.com/atlasesim'
+                href='https://www.instagram.com/ubsim_mongolia'
                 className='text-muted-foreground hover:text-foreground'
               >
                 <svg
@@ -168,7 +168,7 @@ export default function Footer() {
           </div> */}
         </div>
         <div className='mt-8 border-t pt-8 text-center text-sm text-muted-foreground'>
-          <p>© {new Date().getFullYear()} Atlas eSIM. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} UB SIM. All rights reserved.</p>
         </div>
       </div>
     </footer>
