@@ -58,7 +58,7 @@ const getCountryFlagUrl = (countryId) => {
 
 export default async function CountryPage({params,searchParams}) {
   // This would normally come from an API or database
-  const params = await props.params;
+  
 
   const countryId = params.id;
   const countryName =
