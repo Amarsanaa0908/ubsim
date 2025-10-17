@@ -61,7 +61,7 @@ export default function FAQ() {
                 Би өөрийн утасны дугаартай хамт eSIM ашиглаж болох уу?
               </AccordionTrigger>
               <AccordionContent>
-                Манай eSIM зөвхөн интернет холболт олгодог. Таны утасны дугаар
+                Манай eSIM зөвхөн интернэт холболт олгодог. Таны утасны дугаар
                 Our eSIM provides data connectivity only. Your existing phone
                 number will continue to work for calls and SMS through your
                 physical SIM. Many devices support Dual SIM Dual Standby (DSDS),

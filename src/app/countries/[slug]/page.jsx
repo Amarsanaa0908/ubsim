@@ -139,7 +139,7 @@ export default function CountryDataPage() {
                   {countryName} улсын eSIM багцууд
                 </h1>
                 <p className='mt-2 text-muted-foreground'>
-                  {countryName} улсад өндөр хурдны интернеттэй, санаа зовох
+                  {countryName} улсад өндөр хурдны интернэттэй, санаа зовох
                   зүйлгүй аялаарай
                 </p>
 
@@ -574,10 +574,10 @@ export default function CountryDataPage() {
           <div className='container mx-auto px-4 md:px-6'>
             <div className='flex flex-col items-center justify-center space-y-4 text-center mb-8'>
               <h2 className='text-2xl font-bold'>
-                {countryName} дах интернет сүлжээ
+                {countryName} дах интернэт сүлжээ
               </h2>
               <p className='max-w-[700px] text-muted-foreground'>
-                Манай eSIM {countryName} даяар найдвартай интернет холбогддог
+                Манай eSIM {countryName} даяар найдвартай интернэт холбогддог
               </p>
             </div>
 

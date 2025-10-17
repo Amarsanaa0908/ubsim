@@ -276,11 +276,11 @@ const ref = searchParams.get('ref');
                     Ухаалаг, хямд аялъя
                   </Badge>
                   <h1 className='text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none'>
-                    Дэлхийн хаана ч интернеттэй
+                    Дэлхийн хаана ч интернэттэй
                   </h1>
                   <p className='max-w-[600px] text-muted-foreground md:text-xl'>
-                    Дэлхийн 190+ улсад хялбар, хямд интернеттэй. Сим солих
-                    шаардлагагүй, роуминг зардалгүй, хурдан интернет
+                    Дэлхийн 190+ улсад хялбар, хямд интернэттэй. Сим солих
+                    шаардлагагүй, роуминг зардалгүй, хурдан интернэт
                   </p>
                 </div>
                 <div className='flex flex-col gap-2 min-[400px]:flex-row'>
@@ -337,7 +337,7 @@ const ref = searchParams.get('ref');
                   className='rounded-md px-3 py-1 text-sm'
                   variant='secondary'
                 >
-                  Дэлхийн хаана ч интернеттэй
+                  Дэлхийн хаана ч интернэттэй
                 </Badge>
                 <h2 className='text-3xl font-bold tracking-tighter md:text-4xl/tight'>
                   190 гаруй улсад холбогдсон
@@ -530,7 +530,7 @@ const ref = searchParams.get('ref');
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    190+ оронд найдвартай хурдан, хямд интернеттэй аялаарай.
+                    190+ оронд найдвартай хурдан, хямд интернэттэй аялаарай.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -543,7 +543,7 @@ const ref = searchParams.get('ref');
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    QR код уншуулж суулгаад интернеттэй болоорой. Биет SIM
+                    QR код уншуулж суулгаад интернэттэй болоорой. Биет SIM
                     шаардлагагүй
                   </CardDescription>
                 </CardContent>

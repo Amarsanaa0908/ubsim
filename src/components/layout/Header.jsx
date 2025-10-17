@@ -80,7 +80,7 @@ export function Header() {
         <div className='flex items-center gap-2'>
           <Link href='/' className='flex items-center gap-2'>
             <Image
-              src={'/logo.JPG'}
+              src={'/sim2.PNG'}
               alt='UBsim Logo'
               width={150}
               height={150}
