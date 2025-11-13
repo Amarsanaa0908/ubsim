@@ -264,7 +264,7 @@ const ref = searchParams.get('ref');
 
       <main className='flex-1'>
         {/* Hero Section */}
-        <section className='w-full py-12 md:py-24 lg:py-16 xl:py-24 bg-gradient-to-b from-background to-muted'>
+        {/* <section className='w-full py-12 md:py-24 lg:py-16 xl:py-24 bg-gradient-to-b from-background to-muted'>
           <div className='container mx-auto px-4 md:px-6'>
             <div className='grid lg:grid-cols-2 md:px-20'>
               <div className='flex flex-col justify-center space-y-4'>
@@ -323,7 +323,7 @@ const ref = searchParams.get('ref');
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Destinations Section */}
         <section
