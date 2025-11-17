@@ -1,5 +1,6 @@
 'use client';
 
+import { apiList, callGet } from '@/axios/api';
 import FAQ from '@/components/faq/component';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,20 @@ export default function CountryDataPage() {
 
   const countryName =
     countryId.charAt(0).toUpperCase() + countryId.slice(1).replace(/-/g, ' ');
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await callGet(`${apiList.ubsim}/?filters=[["slug","${capitalizeFirstLetter(slug)}"],["isPhysical", ${selectedSimType === "esim" ? false : true}]]`)
+        const { items } = res;
+        setPackages(items)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchPackages()
+  }, [slug, selectedSimType])
 
 //   useEffect(() => {
 //     async function fetchPackages() {
