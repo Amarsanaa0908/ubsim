@@ -634,7 +634,7 @@ export default function CheckoutClient() {
                       <h3 className='font-medium'>Дараагийн алхам</h3>
                       <ol className='list-decimal list-inside space-y-2 text-sm'>
                         <li>
-                          Таны {isLoggedIn ? 'бүртгэлтэй' : 'бүртгүүлсэн'} имэйл
+                          Таны бүртгүүлсэн имэйл
                           хаягаар QR code очих болно
                         </li>
                         <li>QR code-ийг утасныхаа камераар уншуулаарай</li>
