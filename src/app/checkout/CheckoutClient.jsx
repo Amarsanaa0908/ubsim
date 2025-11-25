@@ -382,8 +382,8 @@ export default function CheckoutClient() {
                           </Label>
                           <Input
                             id='guest-phone'
-                            type='tel'
-                            placeholder='+1 (555) 123-4567'
+                            type='number'
+                            placeholder='99999999'
                             value={phone}
                             onChange={(e) => {
                               setPhone(e.target.value);
