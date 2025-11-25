@@ -1,15 +1,20 @@
 "use client"
 
+import { apiList, callGet, callPost } from "@/axios/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { roundToNearestHundred } from "@/lib/utils";
-import { ArrowLeft, Badge, CheckCircle, Globe, Info, Mail, Phone } from "lucide-react";
+import { ArrowLeft, Badge, CheckCircle, Globe, Info, Loader2, LockKeyhole, Mail, Phone } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { QRCodeCanvas } from "qrcode.react";
+import { useEffect, useState } from "react";
 import ReactCountryFlag from "react-country-flag";
+import { toast } from "sonner";
 
 const selectedPlan = {
   id: 'global-traveler',
@@ -42,6 +47,9 @@ export default function CheckoutClient() {
   const [phone, setPhone] = useState('');
   const [emailError, setEmailError] = useState('');
   const [phoneError, setPhoneError] = useState('');
+  const searchParams = useSearchParams();
+  const packageId = searchParams.get('package') ?? '';
+  const [paymentData, setPaymentData] = useState()
 
     const applyCoupon = async () => {
     setIsApplyingCoupon(true);
@@ -71,29 +79,30 @@ export default function CheckoutClient() {
     try {
       let response;
 
-      if (isLoggedIn) {
-        response = await createLoggedInvoice(
-          packageId,
-          totalPrice ?? '',
-          couponCode,
-          Cookies.get("ref"),
-        );
-      } else {
-        response = await createInvoice(
-          email,
-          phone,
-          packageId,
-          totalPrice ?? '',
-          couponCode,
-          Cookies.get("ref")
-        );
-      }
+      const res = await callPost(`${apiList.ubsim}/`, {
+        phoneNumber: phone,
+        email: email,
+        id: packageId,
+        price: totalPrice
+      })
 
-      if (response.data.status) {
-        setPaymentData(response.data.data);
+    
+        // response = await createInvoice(
+        //   email,
+        //   phone,
+        //   packageId,
+        //   totalPrice ?? '',
+        //   couponCode,
+        //   Cookies.get("ref")
+        // );
+      
+
+
+      if (res.status) {
+        setPaymentData(res.data);
         setCurrentStep(2);
       } else {
-        toast.error(response.data.msg[0]);
+        toast.error(res.data.msg[0]);
       }
     } catch (error) {
       console.log(error);
@@ -102,6 +111,37 @@ export default function CheckoutClient() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchPackage = async () => {
+      try {
+        const res = await callGet(`${apiList.ubsim}/${packageId}`)
+        setData(res?.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchPackage()
+  }, [packageId])
+
+  const handleCheck = async (e) => {
+    e.preventDefault();
+    setIsLoading(true)
+    try {
+      const response = await callGet(`${apiList.ubsim}/check/${paymentData?.orderId}`)
+      if (response?.status) {
+        setCurrentStep(3)
+      } else {
+        console.log(response)
+        toast(response.msg[0])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+    setIsLoading(false)
+  }
 
     return (
         <div className='flex min-h-screen flex-col'>
@@ -423,7 +463,7 @@ export default function CheckoutClient() {
                       </div>
                     </div>
 
-                    {!isLoggedIn && (
+                    {/* {!isLoggedIn && (
                       <div className='bg-muted/50 p-4 rounded-md mb-4'>
                         <div className='flex items-start gap-2'>
                           <div>
@@ -449,7 +489,7 @@ export default function CheckoutClient() {
                           </Button>
                         </div>
                       </div>
-                    )}
+                    )} */}
 
                     <div className='flex flex-col items-center justify-center space-y-4'>
                       <div className='text-center mb-2'>

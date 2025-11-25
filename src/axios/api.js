@@ -41,7 +41,7 @@ const callPost = async (command, data, hideMsg = false) => {
   if (resultData.status) {
     if (resultData.msg && resultData?.msg?.length > 0) {
       resultData.msg?.map((message) => {
-        hideMsg || Notification.success({ desc: message });
+        // hideMsg || Notification.success({ desc: message });
       });
     }
   } else if (
@@ -116,7 +116,7 @@ const callPatch = async (command, data, hideMsg = false) => {
   if (resultData.status) {
     if (resultData.msg && resultData?.msg?.length > 0) {
       resultData.msg?.map((message) => {
-        hideMsg || Notification.success({ desc: null });
+        // hideMsg || Notification.success({ desc: null });
       });
     }
   } else if (resultData.msg && resultData?.msg?.length > 0) {

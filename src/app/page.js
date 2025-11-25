@@ -488,7 +488,7 @@ const ref = searchParams.get('ref');
                   <Button
                     variant='outline'
                     size='lg'
-                    className='primary-button text-white'
+                    className='primary-button'
                   >
                     Бүгдийг үзэх
                   </Button>

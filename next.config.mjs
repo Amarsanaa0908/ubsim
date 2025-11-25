@@ -1,7 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['flagcdn.com']
+     images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**', // ⚠️ Accepts any HTTPS hostname
+            },
+            {
+                protocol: 'http',
+                hostname: '**', // ⚠️ Accepts any HTTP hostname
+            },
+        ],
     }
 };
 
