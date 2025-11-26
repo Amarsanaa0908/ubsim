@@ -125,111 +125,6 @@ export function Header() {
 
         {/* User Actions */}
         <div className='flex items-center gap-4'>
-          {isLoggedIn ? (
-            <>
-              {/* <Button variant='ghost' size='icon' className='hidden sm:flex'>
-                <Bell className='h-5 w-5' />
-                <span className='sr-only'>Notifications</span>
-              </Button> */}
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant='ghost'
-                    className='flex items-center gap-2 p-1 px-2'
-                  >
-                    <Avatar className='h-8 w-8'>
-                      <AvatarImage src={user?.avatar} alt={user?.name} />
-                      <AvatarFallback>
-                        {user?.name
-                          .split(' ')
-                          .map((n) => n[0])
-                          .join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className='hidden md:block text-left'>
-                      <p className='text-sm font-medium'>{user?.name}</p>
-                      <p className='text-xs text-muted-foreground'>
-                        {user?.tier} Member
-                      </p>
-                    </div>
-                    <ChevronDown className='h-4 w-4 text-muted-foreground' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align='end' className='w-56'>
-                  <DropdownMenuLabel>
-                    <div className='flex flex-col space-y-1'>
-                      <p className='text-sm font-medium leading-none'>
-                        {user?.name}
-                      </p>
-                      <p className='text-xs leading-none text-muted-foreground'>
-                        {user?.email}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem asChild>
-                      <Link href='/dashboard' className='cursor-pointer'>
-                        <User className='mr-2 h-4 w-4' />
-                        <span>Хяналтын самбар</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href='/dashboard/orders' className='cursor-pointer'>
-                        <Package className='mr-2 h-4 w-4' />
-                        <span>Миний захиалгууд</span>
-                        <Badge className='ml-auto' variant='outline'>
-                          {3}
-                        </Badge>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href='/dashboard/points' className='cursor-pointer'>
-                        <span className='mr-2 flex h-4 w-4 items-center justify-center font-semibold text-xs'>
-                          P
-                        </span>
-                        <span>Миний оноо</span>
-                        <Badge className='ml-auto' variant='outline'>
-                          {user?.points}
-                        </Badge>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link
-                        href='/dashboard/settings'
-                        className='cursor-pointer'
-                      >
-                        <Settings className='mr-2 h-4 w-4' />
-                        <span>Тохиргоо</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={handleLogout}
-                    className='cursor-pointer text-destructive focus:text-destructive'
-                  >
-                    <LogOut className='mr-2 h-4 w-4' />
-                    <span>Гарах</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          ) : (
-            <>
-              <Link
-                href='/login'
-                className='text-sm font-medium hover:underline underline-offset-4 hidden sm:block'
-              >
-                Нэвтрэх
-              </Link>
-              <Button asChild size='sm'>
-                <Link href='/register'>Бүртгүүлэх</Link>
-              </Button>
-            </>
-          )}
-
           {/* Mobile Menu */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
@@ -245,29 +140,29 @@ export function Header() {
               <div className='flex flex-col gap-4'>
                 <div className='flex flex-col space-y-3'>
                   <Link
-                    href='/destinations'
+                    href='/countries'
                     className='flex items-center py-2 text-base font-medium'
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Globe className='mr-2 h-5 w-5' />
-                    Destinations
+                    Багцууд
                   </Link>
                   <Link
-                    href='/plans'
+                    href='/about'
                     className='flex items-center py-2 text-base font-medium'
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Package className='mr-2 h-5 w-5' />
-                    Plans
+                    Бидний тухай
                   </Link>
-                  <Link
+                  {/* <Link
                     href='/how-it-works'
                     className='flex items-center py-2 text-base font-medium'
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <Settings className='mr-2 h-5 w-5' />
                     How It Works
-                  </Link>
+                  </Link> */}
                   <Link
                     href='/faq'
                     className='flex items-center py-2 text-base font-medium'
@@ -282,7 +177,7 @@ export function Header() {
 
                 <Separator />
 
-                {isLoggedIn ? (
+                {/* {isLoggedIn ? (
                   <div className='flex flex-col space-y-3'>
                     <div className='flex items-center gap-3 py-2'>
                       <Avatar className='h-10 w-10'>
@@ -381,7 +276,7 @@ export function Header() {
                       </Link>
                     </Button>
                   </div>
-                )}
+                )} */}
               </div>
             </SheetContent>
           </Sheet>
