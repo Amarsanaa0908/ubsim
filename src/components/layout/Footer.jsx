@@ -10,7 +10,7 @@ export default function Footer() {
             <div className='flex items-center gap-2'>
               <Link href={'/'}>
                 <Image
-                  src={'/logo1.JPG'}
+                  src={'/logo1.jpg'}
                   alt='UB sim Logo'
                   width={150}
                   height={150}
