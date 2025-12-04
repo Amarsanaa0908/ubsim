@@ -712,44 +712,6 @@ export default function CheckoutClient() {
                     <span className='text-muted-foreground'>НӨАТ</span>
                     <span>${(selectedPlan.price * 0.1).toFixed(2)}</span>
                   </div> */}
-                  <div className='space-y-4'>
-                    <Separator />
-                    <div className='space-y-2'>
-                      <Label htmlFor='coupon-code'>Купон код</Label>
-                      <div className='flex gap-2'>
-                        <Input
-                          id='coupon-code'
-                          placeholder='Код оруулах...'
-                          value={couponCode}
-                          onChange={(e) => setCouponCode(e.target.value)}
-                        />
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          onClick={applyCoupon}
-                          disabled={isApplyingCoupon || !couponCode}
-                        >
-                          {isApplyingCoupon ? (
-                            <Loader2 className='h-4 w-4 animate-spin' />
-                          ) : (
-                            'Шалгах'
-                          )}
-                        </Button>
-                      </div>
-                      {/* {couponApplied && (
-                        <p className='text-xs text-green-600 flex items-center'>
-                          <CheckCircle className='h-3 w-3 mr-1' /> Coupon
-                          applied successfully!
-                        </p>
-                      )} */}
-                      {/* {couponError && (
-                        <p className='text-xs text-red-500 flex items-center'>
-                          <Info className='h-3 w-3 mr-1' /> {couponError}
-                        </p>
-                      )} */}
-                    </div>
-                    <Separator />
-                  </div>
                   {afterPromo && (
                     <div className='flex justify-between text-green-600'>
                       <span>{afterPromo?.discountCode}</span>
