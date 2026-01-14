@@ -211,7 +211,7 @@ export default function CountryDataPage() {
                  <h2 className="text-xl font-semibold mb-2">SIM төрөл сонгоно уу</h2>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
                    <Card
-                     className={`cursor-pointer transition-all duration-200 ${
+                     className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "esim"
                          ? "ring-2 ring-blue-500 bg-gradient-to-br from-blue-50 to-purple-50"
                          : "hover:shadow-md"
@@ -224,8 +224,8 @@ export default function CountryDataPage() {
                            <Smartphone className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-semibold text-blue-700">eSIM</h3>
-                           <p className="text-sm text-muted-foreground">Онлайнаар шууд суулгах боломжтой</p>
+                           <h3 className="font-semibold text-white pb-4 text-lg">eSIM</h3>
+                           <p className="text-sm text-muted-foreground text-white">Онлайнаар шууд суулгах боломжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
                            <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
@@ -238,7 +238,7 @@ export default function CountryDataPage() {
                    </Card>
 
                    <Card
-                     className={`cursor-pointer transition-all duration-200 ${
+                     className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "physical"
                          ? "ring-2 ring-green-500 bg-gradient-to-br from-green-50 to-emerald-50"
                          : "hover:shadow-md"
@@ -251,8 +251,8 @@ export default function CountryDataPage() {
                            <CreditCard className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-semibold text-green-700">Биет SIM</h3>
-                           <p className="text-sm text-muted-foreground">eSIM дэмжихгүй утсанд тохиромжтой</p>
+                           <h3 className="font-extrabold text-white pb-4 text-lg">БИЕТ СИМ</h3>
+                           <p className="text-sm text-muted-foreground text-white font-bold">esim дэмжихгүй утсанд тохиромжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
                            <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
