@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { CreditCard, HelpCircle, CheckCircle, AlertCircle, Search } from 'lucide-react';
+import { apiList, callPost } from '@/axios/api';
 
 const PhysicalSimTopup = () => {
   const [snNumber, setSnNumber] = useState('');
@@ -38,6 +39,8 @@ const PhysicalSimTopup = () => {
     if (isValid && selectedPlan) {
       alert(`SN: ${snNumber}\nБагц: ${selectedPlan.data} - ${selectedPlan.days} хоног\nҮнэ: ₮${selectedPlan.price.toLocaleString()}`);
       // Add your API call here
+
+    //   callPost(`${apiList.ubsim}`)
     }
   };
 
