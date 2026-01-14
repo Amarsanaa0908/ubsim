@@ -252,7 +252,7 @@ export default function CountryDataPage() {
                          </div>
                          <div className="flex-1">
                            <h3 className="font-semibold text-green-700">Биет SIM</h3>
-                           <p className="text-sm text-muted-foreground">Биет SIM карт</p>
+                           <p className="text-sm text-muted-foreground">eSIM дэмжихгүй утсанд тохиромжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
                            <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
@@ -266,7 +266,7 @@ export default function CountryDataPage() {
                  </div>
                </div>
 
-               <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 max-w-md">
+               {/* <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 max-w-md">
                  <h3 className="font-medium mb-3">Гол ялгаа</h3>
                  <div className="space-y-2 text-sm">
                    <div className="flex items-center gap-2">
@@ -282,7 +282,7 @@ export default function CountryDataPage() {
                      </span>
                    </div>
                  </div>
-               </div>
+               </div> */}
              </div>
            </div>
          </section>
