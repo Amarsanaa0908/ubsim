@@ -188,7 +188,8 @@ const apiList = {
   time: '/time',
   home: '/home',
   customers: '/customers',
-  ubsim: '/ubsim'
+  ubsim: '/ubsim',
+  packages: '/packages'
 };
 
 export {

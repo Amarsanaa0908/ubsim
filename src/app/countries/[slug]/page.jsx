@@ -50,7 +50,26 @@ export default function CountryDataPage() {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const res = await callGet(`${apiList.ubsim}/?filters=[["slug","${capitalizeFirstLetter(slug)}"],["isPhysical", ${selectedSimType === "esim" ? false : true}]]`)
+
+        const filterArray = [
+          ["slug", "ilike", capitalizeFirstLetter(slug)],
+          ["isPhysical", selectedSimType === "esim" ? false : true],
+        ]
+
+        if (days !== "all") {
+          // Ensure 'days' is a number if you're comparing it as such in your backend
+          // If selectedDuration directly represents the 'days' value, use it.
+          // For this example, we'll assume selectedDuration holds the numeric day value.
+          filterArray.push(["day", Number.parseInt(days??'')])
+        }
+
+        if (quota !== "all") {
+          filterArray.push(["quota", Number.parseInt(quota ?? '')])
+        }
+
+        const filters = JSON.stringify(filterArray)
+
+        const res = await callGet(`${apiList.ubsim}/?filters=[${filters}]`)
         const { items } = res;
         setPackages(items)
       } catch (error) {
@@ -59,7 +78,7 @@ export default function CountryDataPage() {
     }
 
     fetchPackages()
-  }, [slug, selectedSimType])
+  }, [slug, selectedSimType, days, quota])
 
 //   useEffect(() => {
 //     async function fetchPackages() {
@@ -92,29 +111,29 @@ export default function CountryDataPage() {
 //     fetchPackages();
 //   }, [selectedSimType,slug, days, quota]);
 
-//   useEffect(() => {
-//     async function fetchInitialFilters() {
-//       try {
+  useEffect(() => {
+    async function fetchInitialFilters() {
+      try {
 
-//         const dayResponse = await getDays(slug)
-//         if (dayResponse.status) {
-//           setDayArray(dayResponse.data.data);
-//         }
+        const dayResponse = await callGet(`${apiList.packages}/days?country=${slug}`)
+        if (dayResponse.status) {
+          setDayArray(dayResponse.data);
+        }
 
-//         const quotaResponse = await getQuotas(slug);
-//         if (quotaResponse.status) {
-//           setQuotaArray(quotaResponse.data.data);
-//         }
+        const quotaResponse = await callGet(`${apiList.packages}/quotas?country=${slug}`);
+        if (quotaResponse.status) {
+          setQuotaArray(quotaResponse.data);
+        }
 
         
-//       } catch (error) {
-//         toast.error('Error fetching filters');
-//         console.error(error);
-//       }
-//     }
+      } catch (error) {
+        toast.error('Error fetching filters');
+        console.error(error);
+      }
+    }
 
-//     fetchInitialFilters();
-//   }, []);
+    fetchInitialFilters();
+  }, []);
 
 
   // Mock coverage info
