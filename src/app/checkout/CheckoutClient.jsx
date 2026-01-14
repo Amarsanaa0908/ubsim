@@ -43,13 +43,13 @@ export default function CheckoutClient() {
     const [couponCode, setCouponCode] = useState('');
     const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
     const [afterPromo, setAfterPromo] = useState();
-      const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
-  const searchParams = useSearchParams();
-  const packageId = searchParams.get('package') ?? '';
-  const [paymentData, setPaymentData] = useState()
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const searchParams = useSearchParams();
+    const packageId = searchParams.get('package') ?? '';
+    const [paymentData, setPaymentData] = useState()
 
     const applyCoupon = async () => {
     setIsApplyingCoupon(true);

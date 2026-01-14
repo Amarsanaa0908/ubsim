@@ -397,7 +397,28 @@ const [selectedContinent, setSelectedContinent] = useState()
             <div className='mx-auto mt-12 max-w-5xl'>
               <div className="space-y-8">
       {/* Continent Selection */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+        <Link
+            href={'/topup'}
+            key={'continent.id'}
+            className={`group relative h-32 rounded-lg overflow-hidden border-2 transition-all ${
+              selectedContinent === 'continent.id'
+                ? "border-purple-500 shadow-lg scale-105"
+                : "border-transparent hover:border-purple-500/50"
+            }`}
+          >
+            <img
+              src={'/topup.png'}
+              alt={'topup_image'}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-white text-xl sm:text-2xl md:text-3xl font-bold drop-shadow-lg">
+                SIM цэнэглэх
+              </span>
+            </div>
+          </Link>
         {continents.map((continent) => (
           <button
             key={continent.id}
