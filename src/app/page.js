@@ -449,9 +449,9 @@ const [selectedContinent, setSelectedContinent] = useState()
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-white text-center text-xl sm:text-2xl md:text-2xl font-bold drop-shadow-lg">
-                SIM 
-                ЦЭНЭГЛЭХ
+              <span className="text-white text-center text-xl sm:text-2xl md:text-3xl font-bold drop-shadow-lg">
+                Сим
+                цэнэглэх
               </span>
             </div>
           </Link>
