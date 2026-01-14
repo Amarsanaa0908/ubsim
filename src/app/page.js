@@ -27,7 +27,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 
 const trendingCountries = [
@@ -245,11 +245,58 @@ const africaCountries = [
   },
 ];
 
+const continents = [
+    {
+      id: "asia",
+      name: "Ази",
+      image: "/asia.png",
+      regions: ["Ази", "Зүүн Өмнөд Ази", "Өмнөд Ази"],
+    },
+    {
+      id: "europe",
+      name: "Европ",
+      image: "/europe.png",
+      regions: ["Европ"],
+    },
+    {
+      id: "africa",
+      name: "Африк",
+      image: "/africa.png",
+      regions: ["Африк", "Ойрхи Дорнод"],
+    },
+    {
+      id: "america",
+      name: "Америк",
+      image: "/america.png",
+      regions: ["Хойд Америк", "Өмнөд Америк"],
+    },
+    {
+      id: "australia",
+      name: "Австрали",
+      image: "/australia.png",
+      regions: ["Номхон Далай"],
+    },
+  ]
+
+  const countryData = {
+    asia: asiaCountries,
+    europe: euroCountries,
+    america: americaCountries,
+    africa: africaCountries,
+    australia: [], // Add Australian countries if you have them
+  };
+
+
+
  function HomePage() {
 // { searchParams } : {searchParams: {ref?: string}}
 
 const searchParams = useSearchParams();
 const ref = searchParams.get('ref');
+const [selectedContinent, setSelectedContinent] = useState()
+
+  const selectedCountries = countryData[selectedContinent] || [];
+
 
   useEffect(() => {
     if (ref) {
@@ -348,141 +395,64 @@ const ref = searchParams.get('ref');
               </div>
             </div>
             <div className='mx-auto mt-12 max-w-5xl'>
-              <Tabs defaultValue='popular' className='w-full'>
-                <TabsList className='grid w-full grid-cols-3 md:grid-cols-5'>
-                  <TabsTrigger value='popular'>Эрэлттэй</TabsTrigger>
-                  <TabsTrigger value='asia'>Ази</TabsTrigger>
-                  <TabsTrigger value='europe'>Европ</TabsTrigger>
-                  <TabsTrigger value='americas'>Америк</TabsTrigger>
-                  <TabsTrigger value='africa'>Африк & ME</TabsTrigger>
-                </TabsList>
-                <TabsContent value='popular' className='mt-6'>
-                  <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-                    {trendingCountries.map((el) => (
-                      <Link
-                        href={`/countries/${el.ios2}`}
-                        key={el.country}
-                        className='flex flex-col items-center space-y-2 rounded-lg border bg-card p-4 text-center'
-                      >
-                        <div className='h-10 w-10 rounded-full bg-muted'>
-                          <ReactCountryFlag
-                            className='rounded-2xl'
-                            countryCode={el.ios2}
-                            // svg
-                            style={{
-                              fontSize: '2.5em',
-                              lineHeight: '1em',
-                            }}
-                          />
-                        </div>
-                        <span className='text-sm font-medium'>
-                          {el.country}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </TabsContent>
-                <TabsContent value='asia' className='mt-6'>
-                  <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-                    {asiaCountries.map((el) => (
-                      <Link href={`/countries/${el.ios2}`} key={el.country}>
-                      <div
-                        key={el.ios2}
-                        className='flex flex-col items-center space-y-2 rounded-lg border bg-card p-4 text-center'
-                      >
-                        <ReactCountryFlag
-                          className='rounded-2xl'
-                          countryCode={el.ios2}
-                          // svg
-                          style={{
-                            fontSize: '2.5em',
-                            lineHeight: '1em',
-                          }}
-                        />
-                        <span className='text-sm font-medium'>
-                          {el.country}
-                        </span>
-                      </div></Link>
-                      
-                    ))}
-                  </div>
-                </TabsContent>
-                <TabsContent value='europe' className='mt-6'>
-                  <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-                    {euroCountries.map((el, i) => (
-                      <Link href={`/countries/${el.ios2}`} key={i}>
-                      <div
-                        className='flex flex-col items-center space-y-2 rounded-lg border bg-card p-4 text-center'
-                      >
-                        <div className='h-10 w-10 rounded-full bg-muted'>
-                          <ReactCountryFlag
-                            className='rounded-2xl'
-                            countryCode={el.ios2}
-                            // svg
-                            style={{
-                              fontSize: '2.5em',
-                              lineHeight: '1em',
-                            }}
-                          />
-                        </div>
-                        <span className='text-sm font-medium'>
-                          {el.country}
-                        </span>
-                      </div></Link>
-                      
-                    ))}
-                  </div>
-                </TabsContent>
-                <TabsContent value='americas' className='mt-6'>
-                  <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-                    {americaCountries.map((el, i) => (
-                      <Link href={`/countries/${el.ios2}`} key={i}>
-                        <div
-                        className='flex flex-col items-center space-y-2 rounded-lg border bg-card p-4 text-center'
-                      >
-                        <ReactCountryFlag
-                          className='rounded-2xl'
-                          countryCode={el.ios2}
-                          // svg
-                          style={{
-                            fontSize: '2.5em',
-                            lineHeight: '1em',
-                          }}
-                        />
-                        <span className='text-sm font-medium'>
-                          {el.country}
-                        </span>
-                      </div>
-                      </Link>
-                      
-                    ))}
-                  </div>
-                </TabsContent>
-                <TabsContent value='africa' className='mt-6'>
-                  <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-                    {africaCountries.map((el, i) => (
-                      <Link href={`/countries/${el.ios2}`} key={i}>  <div
-                        
-                        className='flex flex-col items-center space-y-2 rounded-lg border bg-card p-4 text-center'
-                      >
-                        <ReactCountryFlag
-                          className='rounded-2xl'
-                          countryCode={el.ios2}
-                          // svg
-                          style={{
-                            fontSize: '2.5em',
-                            lineHeight: '1em',
-                          }}
-                        />
-                        <span className='text-sm font-medium'>
-                          {el.country}
-                        </span>
-                      </div></Link>
-                    
-                    ))}
-                  </div>
-                </TabsContent>
-              </Tabs>
+              <div className="space-y-8">
+      {/* Continent Selection */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        {continents.map((continent) => (
+          <button
+            key={continent.id}
+            onClick={() => setSelectedContinent(continent.id)}
+            className={`group relative h-32 rounded-lg overflow-hidden border-2 transition-all ${
+              selectedContinent === continent.id
+                ? "border-purple-500 shadow-lg scale-105"
+                : "border-transparent hover:border-purple-500/50"
+            }`}
+          >
+            <img
+              src={continent.image}
+              alt={continent.name}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-white text-xl sm:text-2xl md:text-3xl font-bold drop-shadow-lg">
+                {continent.name}
+              </span>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Countries Grid */}
+      {selectedCountries.length > 0 ? (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {selectedCountries.map((el) => (
+            <Link
+              href={`/countries/${el.ios2}`}
+              key={el.ios2}
+              className="flex flex-col items-center space-y-2 rounded-lg border bg-card p-4 text-center hover:shadow-md hover:border-purple-300 transition-all"
+            >
+              <div className="h-10 w-10 rounded-full overflow-hidden">
+                <ReactCountryFlag
+                  className="rounded-2xl"
+                  countryCode={el.ios2}
+                  style={{
+                    fontSize: '2.5em',
+                    lineHeight: '1em',
+                  }}
+                />
+              </div>
+              <span className="text-sm font-medium">{el.country}</span>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12 text-gray-500">
+          <p>Энэ тивд улс байхгүй байна</p>
+        </div>
+      )}
+    </div>
+
               <div className='mt-8 text-center'>
                 <Link href={'/countries'}>
                   <Button
