@@ -173,14 +173,14 @@ export default function CountryDataPage() {
                   {countryName} улсын eSIM багцууд
                 </h1>
                 <p className='mt-2 text-muted-foreground'>
-                  {countryName} улсад өндөр хурдны интернэттэй, санаа зовох
+                  {countryName} улсад өндөр хурдны интернэттэй, тав тухтай
                   зүйлгүй аялаарай
                 </p>
 
                 <div className="flex flex-wrap gap-2 mt-4">
                   <Badge variant="secondary" className="bg-green-100 text-green-700 border-green-200">
                     <Zap className="w-3 h-3 mr-1" />
-                    Шуурхай идэвхжүүлэлт
+                    Тохиргоо шаардлагагүй
                   </Badge>
                   <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-blue-200">
                     <Globe className="w-3 h-3 mr-1" />
