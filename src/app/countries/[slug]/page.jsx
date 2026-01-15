@@ -476,7 +476,7 @@ export default function CountryDataPage() {
                   {packages.map((pkg) => (
                     <Card
                       key={pkg.id}
-                      className={`flex flex-col ${
+                      className={`flex flex-col bg-yellow-50 ${
                         // pkg.popular ? 'border-primary' : ''
                         'border-primary'
                       }`}
