@@ -213,7 +213,7 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "esim"
-                         ? "ring-2 ring-blue-500"
+                         ? "ring-2 ring-yellow-300"
                          : "hover:shadow-md"
                      }`}
                      onClick={() => setSelectedSimType("esim")}
@@ -240,7 +240,7 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "physical"
-                         ? "ring-2 ring-green-500 "
+                         ? "ring-2 ring-yellow-300 "
                          : "hover:shadow-md"
                     }`}
                      onClick={() => setSelectedSimType("physical")}
