@@ -276,7 +276,7 @@ export default function CheckoutClient() {
                     <div className='flex items-start gap-4'>
                      <div className='h-16 w-24 rounded-md bg-primary/10 flex items-center justify-center'>
                       <ReactCountryFlag 
-                        countryCode='CN'
+                        countryCode={data?.country}
                         svg
                         style={{
                           width: '6rem',
