@@ -213,7 +213,7 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "esim"
-                         ? "ring-8 ring-yellow-300"
+                         ? "ring-6 ring-yellow-300"
                          : "hover:shadow-md"
                      }`}
                      onClick={() => setSelectedSimType("esim")}
@@ -224,14 +224,14 @@ export default function CountryDataPage() {
                            <Smartphone className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-semibold text-white pb-4 text-lg">eSIM</h3>
+                           <h3 className="font-semibold text-white pb-2 text-lg">eSIM</h3>
                            <p className="text-sm text-white">Онлайнаар шууд суулгах боломжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
-                           <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
+                           {/* <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
                              <Zap className="w-3 h-3 mr-1" />
                              QR уншуулна
-                           </Badge>
+                           </Badge> */}
                          </div>
                        </div>
                      </CardContent>
@@ -240,25 +240,25 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "physical"
-                         ? "ring-8 ring-yellow-300 "
+                         ? "ring-6 ring-yellow-300 "
                          : "hover:shadow-md"
                     }`}
                      onClick={() => setSelectedSimType("physical")}
                    >
                      <CardContent className="p-4">
                        <div className="flex items-center gap-3">
-                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                         <div className="w-20 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
                            <CreditCard className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-extrabold text-white pb-4 text-lg">БИЕТ СИМ</h3>
-                           <p className="text-sm text-white">esim дэмжихгүй утсанд тохиромжтой</p>
+                           <h3 className="font-extrabold text-white pb-2 text-lg">БИЕТ СИМ</h3>
+                           <p className="text-sm text-white">Esim дэмжихгүй утсанд тохиромжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
-                           <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
+                           {/* <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
                              <Phone className="w-3 h-3 mr-1" />
                              Хүргэлтээр авна
-                           </Badge>
+                           </Badge> */}
                          </div>
                        </div>
                      </CardContent>
