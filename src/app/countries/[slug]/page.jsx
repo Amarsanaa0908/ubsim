@@ -251,7 +251,7 @@ export default function CountryDataPage() {
                            <CreditCard className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-extrabold text-white pb-2 text-lg">БИЕТ СИМ</h3>
+                           <h3 className="font-extrabold text-white pb-2 text-lg">Биет сим</h3>
                            <p className="text-sm text-white">Esim дэмжихгүй утсанд тохиромжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
