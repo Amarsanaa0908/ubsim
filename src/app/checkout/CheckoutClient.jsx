@@ -359,7 +359,7 @@ export default function CheckoutClient() {
                           <Input
                             id='guest-email'
                             type='email'
-                            placeholder='your.email@example.com'
+                            placeholder='И-мэйл*'
                             value={email}
                             onChange={(e) => {
                               setEmail(e.target.value);
@@ -383,7 +383,7 @@ export default function CheckoutClient() {
                           <Input
                             id='guest-phone'
                             type='number'
-                            placeholder='99999999'
+                            placeholder='Утасны дугаар *'
                             value={phone}
                             onChange={(e) => {
                               setPhone(e.target.value);
