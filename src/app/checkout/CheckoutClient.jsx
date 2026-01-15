@@ -1,13 +1,14 @@
 "use client"
 
 import { apiList, callGet, callPost } from "@/axios/api";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { roundToNearestHundred } from "@/lib/utils";
-import { ArrowLeft, Badge, CheckCircle, Globe, Info, Loader2, LockKeyhole, Mail, Phone } from "lucide-react";
+import { ArrowLeft, CheckCircle, Globe, Info, Loader2, LockKeyhole, Mail, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
