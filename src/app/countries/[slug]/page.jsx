@@ -213,7 +213,7 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "esim"
-                         ? "ring-2 ring-yellow-300"
+                         ? "ring-8 ring-yellow-300"
                          : "hover:shadow-md"
                      }`}
                      onClick={() => setSelectedSimType("esim")}
@@ -240,7 +240,7 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "physical"
-                         ? "ring-2 ring-yellow-300 "
+                         ? "ring-8 ring-yellow-300 "
                          : "hover:shadow-md"
                     }`}
                      onClick={() => setSelectedSimType("physical")}
@@ -359,7 +359,7 @@ export default function CountryDataPage() {
         {/* Plans Section */}
         <section className='w-full py-8 md:py-12'>
           <div className='container mx-auto px-4 md:px-6'>
-            <Tabs defaultValue='list' className='w-full'>
+            <Tabs defaultValue='grid' className='w-full'>
               <div className='flex justify-between items-center mb-6'>
                 <h2 className='text-2xl font-bold'>Багцууд</h2>
                 {/* <TabsList>
