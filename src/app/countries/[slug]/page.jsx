@@ -213,7 +213,7 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "esim"
-                         ? "ring-2 ring-blue-500 bg-gradient-to-br from-blue-50 to-purple-50"
+                         ? "ring-2 ring-blue-500"
                          : "hover:shadow-md"
                      }`}
                      onClick={() => setSelectedSimType("esim")}
@@ -240,7 +240,7 @@ export default function CountryDataPage() {
                    <Card
                      className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
                        selectedSimType === "physical"
-                         ? "ring-2 ring-green-500 bg-gradient-to-br from-green-50 to-emerald-50"
+                         ? "ring-2 ring-green-500 "
                          : "hover:shadow-md"
                     }`}
                      onClick={() => setSelectedSimType("physical")}
@@ -301,7 +301,7 @@ export default function CountryDataPage() {
                   />
                 </div> */}
                 <Select value={days} onValueChange={setDays}>
-                <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectTrigger className="w-full sm:w-[180px] bg-gray-700 text-white">
                   <SelectValue placeholder="Filter by duration" />
                 </SelectTrigger>
                 <SelectContent>
@@ -320,7 +320,7 @@ export default function CountryDataPage() {
                 </SelectContent>
               </Select>
               <Select value={quota} onValueChange={setQuota}>
-                <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectTrigger className="w-full sm:w-[180px] bg-gray-700 text-white">
                   <SelectValue placeholder="Filter by duration" />
                 </SelectTrigger>
                 <SelectContent>
@@ -367,7 +367,7 @@ export default function CountryDataPage() {
                 </TabsList> */}
               </div>
               {/* List View */}
-              {/* <TabsContent value='list' className='space-y-4'>
+              <TabsContent value='list' className='space-y-4'>
                 <div className='rounded-lg border overflow-hidden'>
                   <div className='hidden md:grid md:grid-cols-6 bg-muted px-4 py-3 font-medium text-sm'>
                     <div className='col-span-2'>Багц</div>
@@ -470,7 +470,7 @@ export default function CountryDataPage() {
                     ))}
                   </div>
                 </div>
-              </TabsContent> */}
+              </TabsContent>
               <TabsContent value='grid' className='space-y-4'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
                   {packages.map((pkg) => (
