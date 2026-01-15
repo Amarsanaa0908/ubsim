@@ -224,8 +224,8 @@ export default function CountryDataPage() {
                            <Smartphone className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-semibold text-muted-foreground pb-4 text-lg">eSIM</h3>
-                           <p className="text-sm text-muted-foreground">Онлайнаар шууд суулгах боломжтой</p>
+                           <h3 className="font-semibold text-white pb-4 text-lg">eSIM</h3>
+                           <p className="text-sm text-white">Онлайнаар шууд суулгах боломжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
                            <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
@@ -251,8 +251,8 @@ export default function CountryDataPage() {
                            <CreditCard className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-extrabold text-muted-foreground pb-4 text-lg">БИЕТ СИМ</h3>
-                           <p className="text-sm text-muted-foreground">esim дэмжихгүй утсанд тохиромжтой</p>
+                           <h3 className="font-extrabold text-white pb-4 text-lg">БИЕТ СИМ</h3>
+                           <p className="text-sm text-white">esim дэмжихгүй утсанд тохиромжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
                            <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
