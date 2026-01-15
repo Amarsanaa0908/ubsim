@@ -224,8 +224,8 @@ export default function CountryDataPage() {
                            <Smartphone className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-semibold text-white pb-4 text-lg">eSIM</h3>
-                           <p className="text-sm text-muted-foreground text-white">Онлайнаар шууд суулгах боломжтой</p>
+                           <h3 className="font-semibold text-muted-foreground pb-4 text-lg">eSIM</h3>
+                           <p className="text-sm text-muted-foreground">Онлайнаар шууд суулгах боломжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
                            <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
@@ -251,8 +251,8 @@ export default function CountryDataPage() {
                            <CreditCard className="w-5 h-5 text-white" />
                          </div>
                          <div className="flex-1">
-                           <h3 className="font-extrabold text-white pb-4 text-lg">БИЕТ СИМ</h3>
-                           <p className="text-sm text-muted-foreground text-white font-bold">esim дэмжихгүй утсанд тохиромжтой</p>
+                           <h3 className="font-extrabold text-muted-foreground pb-4 text-lg">БИЕТ СИМ</h3>
+                           <p className="text-sm text-muted-foreground">esim дэмжихгүй утсанд тохиромжтой</p>
                          </div>
                          <div className="flex flex-col gap-1">
                            <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
@@ -292,14 +292,14 @@ export default function CountryDataPage() {
           <div className='container mx-auto px-4 md:px-6'>
             <div className='flex flex-col sm:flex-row gap-4 items-center justify-between'>
               <div className='flex flex-col sm:flex-row gap-4 w-full sm:w-auto'>
-                <div className='relative w-full sm:w-[260px]'>
+                {/* <div className='relative w-full sm:w-[260px]'>
                   <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
                   <Input
                     type='search'
                     placeholder='Багц хайх...'
                     className='w-full pl-8'
                   />
-                </div>
+                </div> */}
                 <Select value={days} onValueChange={setDays}>
                 <SelectTrigger className="w-full sm:w-[180px]">
                   <SelectValue placeholder="Filter by duration" />
@@ -339,7 +339,7 @@ export default function CountryDataPage() {
                 </SelectContent>
               </Select>
               </div>
-              <div className='flex gap-2 w-full sm:w-auto justify-between sm:justify-end'>
+              {/* <div className='flex gap-2 w-full sm:w-auto justify-between sm:justify-end'>
                 <Button variant='outline' size='sm' className='h-9'>
                   <Filter className='mr-2 h-4 w-4' />
                   Шүүлтүүр
@@ -351,7 +351,7 @@ export default function CountryDataPage() {
                   <X className='mr-2 h-4 w-4' />
                   Цэвэрлэх
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -362,13 +362,12 @@ export default function CountryDataPage() {
             <Tabs defaultValue='list' className='w-full'>
               <div className='flex justify-between items-center mb-6'>
                 <h2 className='text-2xl font-bold'>Багцууд</h2>
-                <TabsList>
-                  <TabsTrigger value='list'>Жагсаалтаар</TabsTrigger>
+                {/* <TabsList>
                   <TabsTrigger value='grid'>Хөндлөнгөөр</TabsTrigger>
-                </TabsList>
+                </TabsList> */}
               </div>
               {/* List View */}
-              <TabsContent value='list' className='space-y-4'>
+              {/* <TabsContent value='list' className='space-y-4'>
                 <div className='rounded-lg border overflow-hidden'>
                   <div className='hidden md:grid md:grid-cols-6 bg-muted px-4 py-3 font-medium text-sm'>
                     <div className='col-span-2'>Багц</div>
@@ -471,7 +470,7 @@ export default function CountryDataPage() {
                     ))}
                   </div>
                 </div>
-              </TabsContent>
+              </TabsContent> */}
               <TabsContent value='grid' className='space-y-4'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
                   {packages.map((pkg) => (
