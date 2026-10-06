@@ -189,7 +189,8 @@ const apiList = {
   home: '/home',
   customers: '/customers',
   ubsim: '/ubsim',
-  packages: '/packages'
+  packages: '/packages',
+  testing: '/testing'
 };
 
 export {
