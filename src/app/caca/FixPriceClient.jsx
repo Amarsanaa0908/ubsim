@@ -17,8 +17,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { apiList, callGet } from '@/axios/api'
 
-const AUTHORIZED_EMAIL = 'Tsatsaa718@gmail.com'
-const AUTHORIZED_CODE = 'Tsatsaa123'
+const AUTHORIZED_EMAIL = 'admin@simops.test'
+const AUTHORIZED_CODE = 'SIM-ADMIN-2026'
 
 const countries = ['All countries', 'United States', 'United Kingdom', 'Japan', 'Australia', 'Germany', 'France', 'Singapore', 'Brazil']
 const durations = ['All durations', '7 days', '15 days', '30 days', '60 days', '90 days']
