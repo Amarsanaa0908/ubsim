@@ -77,13 +77,18 @@ const selectedPlan =
   plans?.find((plan) => plan.id === selectedId) ?? plans?.[0]
 
 
-  const filteredPlans = useMemo(() => plans?.filter((plan) => {
-    const matchesCountry = country === 'All countries' || plan.country === country
-    const matchesDuration = duration === 'All durations' || plan.duration === duration
-    const matchesQuota = quota === 'All quotas' || plan.quota === quota
-    const matchesSearch = !search || `${plan.id} ${plan.name}`.toLowerCase().includes(search.toLowerCase())
-    return matchesCountry && matchesDuration && matchesQuota && matchesSearch
-  }), [country, duration, quota, search])
+  const filteredPlans = useMemo(
+  () =>
+    (plans ?? []).filter((plan) => {
+      const matchesCountry = country === 'All countries' || plan.country === country
+      const matchesDuration = duration === 'All durations' || plan.duration === duration
+      const matchesQuota = quota === 'All quotas' || plan.quota === quota
+      const matchesSearch =
+        !search || `${plan.id} ${plan.name}`.toLowerCase().includes(search.toLowerCase())
+      return matchesCountry && matchesDuration && matchesQuota && matchesSearch
+    }),
+  [plans, country, duration, quota, search]
+)
 
   function selectPlan(plan) {
     setSelectedId(plan.id)
