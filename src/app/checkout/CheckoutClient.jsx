@@ -37,6 +37,29 @@ const selectedPlan = {
   popular: true,
 };
 
+const toMnt = (value) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? Math.round(n / 100) * 100 : null;
+};
+
+const formatMnt = (value) => {
+  const n = toMnt(value);
+  return n === null ? '—' : `${n.toLocaleString('en-US')}₮`;
+};
+
+// Price the customer pays: discountPrice when valid, otherwise price
+const getPayablePrice = (pkg) => {
+  if (!pkg) return 0;
+  const discount = Number(pkg.discountPrice);
+  const price = Number(pkg.price);
+  return Number.isFinite(discount) && discount > 0 && discount < price ? discount : price;
+};
+
+const hasCheckoutDiscount = (pkg) => {
+  if (!pkg) return false;
+  return getPayablePrice(pkg) < Number(pkg.price);
+};
+
 export default function CheckoutClient() {
     const [isLoading, setIsLoading] = useState(false);
     const [currentStep, setCurrentStep] = useState(1)
@@ -74,8 +97,8 @@ export default function CheckoutClient() {
     e.preventDefault();
     setIsLoading(true);
 
-    const totalPrice =
-      afterPromo?.total.toLocaleString() ?? data?.price.toLocaleString();
+const totalPrice =
+  afterPromo?.total?.toLocaleString() ?? getPayablePrice(data).toLocaleString();
 
     try {
       let response;
@@ -541,10 +564,7 @@ export default function CheckoutClient() {
                         <p>
                           Төлөх дүн:{' '}
                           <span className='font-semibold'>
-                            {afterPromo?.total
-                              ? roundToNearestHundred(afterPromo.total)
-                              : roundToNearestHundred(data?.price ?? 0)}{' '}
-                            ТӨГ
+                            {afterPromo?.total ? formatMnt(afterPromo.total) : formatMnt(getPayablePrice(data))}
                           </span>
                         </p>
                         <p className='mt-1'>
@@ -608,9 +628,7 @@ export default function CheckoutClient() {
                         <div className='font-medium'>{data?.packageTitle}</div>
                         <div className='text-muted-foreground'>Дүн:</div>
                         <div className='font-medium'>
-                          {afterPromo?.total
-                            ? roundToNearestHundred(afterPromo.total)
-                            : roundToNearestHundred(data?.price ?? 0)}{' '}
+                          {afterPromo?.total ? formatMnt(afterPromo.total) : formatMnt(getPayablePrice(data))}
                           ТӨГ
                         </div>
                       </div>
@@ -688,8 +706,17 @@ export default function CheckoutClient() {
                 <CardContent className='space-y-4'>
                   <div className='flex justify-between'>
                     <span className='text-muted-foreground'>Үнэ</span>
-                    <span>{roundToNearestHundred(data?.price ?? 0)} ТӨГ</span>
+                    <span className={hasCheckoutDiscount(data) ? 'text-slate-400 line-through' : ''}>
+                      {formatMnt(data?.price ?? 0)}
+                    </span>
                   </div>
+
+                  {hasCheckoutDiscount(data) && (
+                    <div className='flex justify-between text-rose-600'>
+                      <span>Хямдрал</span>
+                      <span>-{formatMnt(Number(data.price) - getPayablePrice(data))}</span>
+                    </div>
+                  )}
                   <div className='flex justify-between'>
                     <span className='text-muted-foreground'>Хэмжээ</span>
                     <span>{(data?.quota ?? 0) / 1000} GB</span>
@@ -707,7 +734,7 @@ export default function CheckoutClient() {
                   <Separator />
                   <div className='flex justify-between'>
                     <span className='text-muted-foreground'>Дүн</span>
-                    <span>{roundToNearestHundred(data?.price ?? 0)} ТӨГ</span>
+                    <span>{formatMnt(getPayablePrice(data))}</span>
                   </div>
                   {/* <div className='flex justify-between'>
                     <span className='text-muted-foreground'>НӨАТ</span>
@@ -723,9 +750,9 @@ export default function CheckoutClient() {
                   <div className='flex justify-between font-bold'>
                     <span>Нийт</span>
                     <span>
-                      {afterPromo?.total
-                        ? roundToNearestHundred(afterPromo.total)
-                        : roundToNearestHundred(data?.price ?? 0)}{' '}
+                      <span>
+                        {afterPromo?.total ? formatMnt(afterPromo.total) : formatMnt(getPayablePrice(data))}
+                      </span>
                       ТӨГ
                     </span>
                   </div>

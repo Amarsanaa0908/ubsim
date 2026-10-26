@@ -4,195 +4,204 @@ import { apiList, callGet } from '@/axios/api';
 import FAQ from '@/components/faq/component';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { capitalizeFirstLetter, roundToNearestHundred } from '@/lib/utils';
-import { CheckCircle, ChevronDown, CreditCard, Filter, Globe, Info, Phone, Search, Smartphone, X, Zap } from 'lucide-react';
+import { roundToNearestHundred } from '@/lib/utils';
+import { CheckCircle, CreditCard, Globe, Hourglass, Info, MapPin, Phone, Signal, Smartphone, Zap } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+const numberFormatter = new Intl.NumberFormat('en-US');
+const formatPrice = (value) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? `${numberFormatter.format(n)}₮` : '—';
+};
+
+const dataLabel = (pkg) => {
+  if (pkg.quota === 0) return 'Хязгааргүй';
+  const gb = pkg.quota / 1000;
+  return pkg.isDaily ? `${gb} GB/өдөр` : `${gb} GB`;
+};
+
+const durationLabel = (pkg) => (pkg.isDaily ? 'Өдөр бүр' : `${pkg.day} хоног`);
+
+function PackageCard({ pkg, countryCode }) {
+  const isPhysical = pkg.isPhysical === true;
+
+  const toMnt = (value) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? Math.round(n / 100) * 100 : null;
+  };
+
+const formatMnt = (value) => {
+  const n = toMnt(value);
+  return n === null ? '—' : `${n.toLocaleString('en-US')}₮`;
+  };  
+
+  const hasDiscount = (pkg) => {
+  const discount = Number(pkg.discountPrice);
+  const price = Number(pkg.price);
+    return Number.isFinite(discount) && discount > 0 && discount < price;
+  };
+
+  return (
+    <Card className='flex flex-col rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md'>
+      <CardContent className='flex flex-1 flex-col p-5'>
+        <div className='flex items-start justify-between'>
+          <div className='flex items-center gap-3'>
+            <Image
+              src={`https://flagcdn.com/w80/${countryCode}.png`}
+              alt={`${pkg.country} flag`}
+              width={40}
+              height={28}
+              className='h-7 w-10 rounded-sm object-cover'
+            />
+            <Badge variant='secondary' className='bg-slate-100 text-slate-600'>
+              {pkg.isTrending ? 'Эрэлттэй' : 'Энгийн'}
+            </Badge>
+          </div>
+          <div className='text-right'>
+            {hasDiscount(pkg) ? (
+              <>
+                <p className='text-2xl font-bold text-rose-600'>
+                  {formatPrice(Number(pkg.discountPrice))}
+                </p>
+                <p className='text-sm text-slate-400 line-through'>
+                  {formatPrice(Number(pkg.price))}
+                </p>
+              </>
+            ) : (
+              <p className='text-2xl font-bold text-slate-900'>
+                {formatPrice(Number(pkg.price))}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className='mt-5'>
+          <h3 className='text-lg font-semibold text-slate-900'>
+            {pkg.country} - {pkg.quota === 0 ? 'Unlimited' : `${pkg.gb} GB`} {pkg.isDaily ? '/day' : `${pkg.day} days`}
+          </h3>
+          <p className='mt-1 flex items-center gap-1 text-sm text-blue-600'>
+            <MapPin className='h-4 w-4' />
+            {pkg.country}
+          </p>
+        </div>
+
+        <div className='mt-5 grid grid-cols-2 gap-y-4 border-t border-slate-100 pt-5 text-sm'>
+          <div className='flex items-center gap-2 text-slate-700'>
+            <Signal className='h-4 w-4 text-slate-500' />
+            <span>{dataLabel(pkg)}</span>
+          </div>
+          <div className='flex items-center gap-2 text-slate-700'>
+            <Smartphone className='h-4 w-4 text-slate-500' />
+            <span>Төрөл: {isPhysical ? 'Биет' : 'eSIM'}</span>
+          </div>
+          <div className='flex items-center gap-2 text-slate-700'>
+            <Hourglass className='h-4 w-4 text-slate-500' />
+            <span>{durationLabel(pkg)}</span>
+          </div>
+          <div className='flex items-center gap-2 text-slate-700'>
+            <Zap className='h-4 w-4 text-slate-500' />
+            <span>Идэвхжүүлэлт: Тийм</span>
+          </div>
+        </div>
+
+        <div className='mt-auto pt-6'>
+          <Button asChild className='w-full'>
+            <Link href={`/checkout?package=${pkg.id}`}>Сонгох</Link>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function CountryDataPage() {
-    const [selectedSimType, setSelectedSimType] = useState("esim")
-  // const [loading, setLoading] = useState(false);
-  const [packages, setPackages] = useState([]);
+  const { slug } = useParams();
+  const countryId = slug;
+  const countryName = countryId.charAt(0).toUpperCase() + countryId.slice(1).replace(/-/g, ' ');
+
+  const [simType, setSimType] = useState('esim');
   const [days, setDays] = useState('all');
   const [quota, setQuota] = useState('all');
-  // const [countries, setCountries] = useState<Country[]>([]);
+  const [packages, setPackages] = useState([]);
   const [dayArray, setDayArray] = useState([]);
   const [quotaArray, setQuotaArray] = useState([]);
-
-  // This would normally come from an API or database
-  const { slug } = useParams()
-
-  const countryId = slug;
-
-  const countryName =
-    countryId.charAt(0).toUpperCase() + countryId.slice(1).replace(/-/g, ' ');
 
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-
         const filterArray = [
-          ["slug", "ilike", capitalizeFirstLetter(slug)],
-          ["isPhysical", selectedSimType === "esim" ? false : true],
-        ]
+          ['slug', 'ilike', countryId.toUpperCase()],
+          ['isPhysical', simType === 'physical'],
+        ];
+        if (days !== 'all') filterArray.push(['day', Number.parseInt(days, 10)]);
+        if (quota !== 'all') filterArray.push(['quota', Number.parseInt(quota, 10)]);
 
-        if (days !== "all") {
-          // Ensure 'days' is a number if you're comparing it as such in your backend
-          // If selectedDuration directly represents the 'days' value, use it.
-          // For this example, we'll assume selectedDuration holds the numeric day value.
-          filterArray.push(["day", Number.parseInt(days??'')])
-        }
-
-        if (quota !== "all") {
-          filterArray.push(["quota", Number.parseInt(quota ?? '')])
-        }
-
-        const filters = JSON.stringify(filterArray)
-
-        const res = await callGet(`${apiList.ubsim}/?filters=[${filters}]`)
-        const { items } = res;
-        setPackages(items)
+        const res = await callGet(`${apiList.ubsim}/?filters=[${JSON.stringify(filterArray)}]`);
+        setPackages(res?.items ?? []);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-
-    fetchPackages()
-  }, [slug, selectedSimType, days, quota])
-
-//   useEffect(() => {
-//     async function fetchPackages() {
-
-//          const filterArray = [
-//       ["slug", "ilike", capitalizeFirstLetter(slug)],
-//       ["isPhysical", selectedSimType === "esim" ? false : true],
-//     ]
-//     if (days !== "all") {
-//       // Ensure 'days' is a number if you're comparing it as such in your backend
-//       // If selectedDuration directly represents the 'days' value, use it.
-//       // For this example, we'll assume selectedDuration holds the numeric day value.
-//       filterArray.push(["day", Number.parseInt(days??'')])
-//     }
-
-//     if (quota !== "all") {
-//       filterArray.push(["quota", Number.parseInt(quota ?? '')])
-//     }
-//       const filters = JSON.stringify(filterArray)
-
-//       const response = await getPackages({ filters, page: 0, size: 100 });
-//       if (response.success) {
-//         setPackages(response.data.items);
-//       } else {
-//         toast.error('Failed to fetch packages');
-//       }
-//       // setLoading(false);
-//     }
-
-//     fetchPackages();
-//   }, [selectedSimType,slug, days, quota]);
+    };
+    fetchPackages();
+  }, [countryId, simType, days, quota]);
 
   useEffect(() => {
     async function fetchInitialFilters() {
       try {
+        const dayResponse = await callGet(`${apiList.packages}/days?country=${countryId}`);
+        if (dayResponse.status) setDayArray(dayResponse.data);
 
-        const dayResponse = await callGet(`${apiList.packages}/days?country=${slug}`)
-        if (dayResponse.status) {
-          setDayArray(dayResponse.data);
-        }
-
-        const quotaResponse = await callGet(`${apiList.packages}/quotas?country=${slug}`);
-        if (quotaResponse.status) {
-          setQuotaArray(quotaResponse.data);
-        }
-
-        
+        const quotaResponse = await callGet(`${apiList.packages}/quotas?country=${countryId}`);
+        if (quotaResponse.status) setQuotaArray(quotaResponse.data);
       } catch (error) {
         toast.error('Error fetching filters');
         console.error(error);
       }
     }
-
     fetchInitialFilters();
-  }, []);
-
-
-  // Mock coverage info
-  const coverageInfo = {
-    providers: ['Major Network 1', 'Major Network 2', 'Major Network 3'],
-    coverage: 'Excellent (95% population coverage)',
-    speeds: 'Average 4G: 40 Mbps, 5G: 180+ Mbps',
-    areas: [
-      'Major City 1',
-      'Major City 2',
-      'Major City 3',
-      'All major cities and tourist destinations',
-    ],
-  };
+  }, [countryId]);
 
   return (
     <div className='flex min-h-screen flex-col'>
-      {/* Header */}
-
       <main className='flex-1'>
-        {/* Country Header */}
-        <section className='w-full py-8 md:py-12 bg-muted'>
+        {/* Country header */}
+        <section className='w-full bg-muted py-8 md:py-12'>
           <div className='container mx-auto px-4 md:px-6'>
-            <div className='flex flex-col md:flex-row md:items-center gap-6'>
+            <div className='flex flex-col gap-6 md:flex-row md:items-center'>
               <div className='flex-1'>
-                <div className='flex items-center gap-3 mb-2'>
-                  <Link
-                    href='/countries'
-                    className='text-sm text-muted-foreground hover:text-foreground'
-                  >
+                <div className='mb-2 flex items-center gap-3'>
+                  <Link href='/countries' className='text-sm text-muted-foreground hover:text-foreground'>
                     Бүх улсууд
                   </Link>
                   <span className='text-muted-foreground'>→</span>
                   <span className='text-sm font-medium'>{countryName}</span>
                 </div>
-                <h1 className='text-3xl font-bold'>
-                  {countryName} улсын eSIM багцууд
-                </h1>
+                <h1 className='text-3xl font-bold'>{countryName} улсын eSIM багцууд</h1>
                 <p className='mt-2 text-muted-foreground'>
-                  {countryName} улсад өндөр хурдны интернэттэй, тав тухтай
-                  зүйлгүй аялаарай
+                  {countryName} улсад өндөр хурдны интернэттэй, тав тухтай зүйлгүй аялаарай
                 </p>
-
-                <div className="flex flex-wrap gap-2 mt-4">
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 border-green-200">
-                    <Zap className="w-3 h-3 mr-1" />
+                <div className='mt-4 flex flex-wrap gap-2'>
+                  <Badge variant='secondary' className='border-green-200 bg-green-100 text-green-700'>
+                    <Zap className='mr-1 h-3 w-3' />
                     Тохиргоо шаардлагагүй
                   </Badge>
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-blue-200">
-                    <Globe className="w-3 h-3 mr-1" />
+                  <Badge variant='secondary' className='border-blue-200 bg-blue-100 text-blue-700'>
+                    <Globe className='mr-1 h-3 w-3' />
                     Өргөө сүлжээ
                   </Badge>
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-700 border-purple-200">
-                    <Phone className="w-3 h-3 mr-1" />
+                  <Badge variant='secondary' className='border-purple-200 bg-purple-100 text-purple-700'>
+                    <Phone className='mr-1 h-3 w-3' />
                     24/7 Туслах
                   </Badge>
                 </div>
               </div>
-              <div className='flex-shrink-0 w-32 h-24 md:w-72 md:h-44 relative rounded-lg overflow-hidden'>
+              <div className='relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-lg md:h-44 md:w-72'>
                 <Image
                   src={`https://flagcdn.com/w320/${countryId.toLowerCase()}.png`}
                   alt={`${countryName} Flag`}
@@ -204,497 +213,112 @@ export default function CountryDataPage() {
           </div>
         </section>
 
-        <section className="w-full py-6 border-b bg-white">
-           <div className="container mx-auto px-4 md:px-6">
-             <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
-               <div className="flex-1">
-                 <h2 className="text-xl font-semibold mb-2">SIM төрөл сонгоно уу</h2>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
-                   <Card
-                     className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
-                       selectedSimType === "esim"
-                         ? "ring-6 ring-yellow-300"
-                         : "hover:shadow-md"
-                     }`}
-                     onClick={() => setSelectedSimType("esim")}
-                   >
-                     <CardContent className="p-4">
-                       <div className="flex items-center gap-3">
-                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                           <Smartphone className="w-5 h-5 text-white" />
-                         </div>
-                         <div className="flex-1">
-                           <h3 className="font-semibold text-white pb-2 text-lg">eSIM</h3>
-                           <p className="text-sm text-white">Онлайнаар шууд суулгах боломжтой</p>
-                         </div>
-                         <div className="flex flex-col gap-1">
-                           {/* <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
-                             <Zap className="w-3 h-3 mr-1" />
-                             QR уншуулна
-                           </Badge> */}
-                         </div>
-                       </div>
-                     </CardContent>
-                   </Card>
+        {/* Horizontal filter bar */}
+        <section className='sticky top-0 z-10 w-full border-b bg-white py-4'>
+          <div className='container mx-auto flex flex-col gap-3 px-4 md:px-6 lg:flex-row lg:items-center'>
+            <div className='inline-flex rounded-lg border border-slate-200 bg-slate-50 p-1'>
+              {[
+                { value: 'esim', label: 'eSIM', icon: Smartphone },
+                { value: 'physical', label: 'Биет сим', icon: CreditCard },
+              ].map(({ value, label, icon: Icon }) => (
+                <button
+                  key={value}
+                  type='button'
+                  onClick={() => setSimType(value)}
+                  className={`flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                    simType === value ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Icon className='h-4 w-4' />
+                  {label}
+                </button>
+              ))}
+            </div>
 
-                   <Card
-                     className={`cursor-pointer transition-all duration-200 bg-gray-700 ${
-                       selectedSimType === "physical"
-                         ? "ring-6 ring-yellow-300 "
-                         : "hover:shadow-md"
-                    }`}
-                     onClick={() => setSelectedSimType("physical")}
-                   >
-                     <CardContent className="p-4">
-                       <div className="flex items-center gap-3">
-                         <div className="w-20 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                           <CreditCard className="w-5 h-5 text-white" />
-                         </div>
-                         <div className="flex-1">
-                           <h3 className="font-extrabold text-white pb-2 text-lg">Биет сим</h3>
-                           <p className="text-sm text-white">Esim дэмжихгүй утсанд тохиромжтой</p>
-                         </div>
-                         <div className="flex flex-col gap-1">
-                           {/* <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700">
-                             <Phone className="w-3 h-3 mr-1" />
-                             Хүргэлтээр авна
-                           </Badge> */}
-                         </div>
-                       </div>
-                     </CardContent>
-                   </Card>
-                 </div>
-               </div>
-
-               {/* <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 max-w-md">
-                 <h3 className="font-medium mb-3">Гол ялгаа</h3>
-                 <div className="space-y-2 text-sm">
-                   <div className="flex items-center gap-2">
-                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                     <span>
-                       <strong>eSIM:</strong> Шууд суулгаад ашиглах боломжтой
-                     </span>
-                   </div>
-                   <div className="flex items-center gap-2">
-                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                     <span>
-                       <strong>Биет:</strong> eSIM дэмжихгүй утсанд тохиромжтой
-                     </span>
-                   </div>
-                 </div>
-               </div> */}
-             </div>
-           </div>
-         </section>
-
-        {/* Filter Section */}
-        <section className='w-full py-4 border-b'>
-          <div className='container mx-auto px-4 md:px-6'>
-            <div className='flex flex-col sm:flex-row gap-4 items-center justify-between'>
-              <div className='flex flex-col sm:flex-row gap-4 w-full sm:w-auto'>
-                {/* <div className='relative w-full sm:w-[260px]'>
-                  <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-                  <Input
-                    type='search'
-                    placeholder='Багц хайх...'
-                    className='w-full pl-8'
-                  />
-                </div> */}
-                <Select value={days} onValueChange={setDays}>
-                <SelectTrigger className="w-full sm:w-[180px] bg-gray-700 text-white">
-                  <SelectValue placeholder="Filter by duration" />
+            <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:flex-1 lg:justify-end'>
+              <Select value={days} onValueChange={setDays}>
+                <SelectTrigger className='w-full bg-white lg:w-[180px]'>
+                  <SelectValue placeholder='Хоног' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Хоног</SelectItem>
-                  {dayArray &&
-                    dayArray.map(
-                      (
-                        item,
-                        index, // Use 'data' if it's the source of your items
-                      ) => (
-                        <SelectItem key={index} value={item.toString()}>
-                          {item}
-                        </SelectItem>
-                      ),
-                    )}
+                  <SelectItem value='all'>Бүх хоног</SelectItem>
+                  {dayArray?.map((item) => (
+                    <SelectItem key={item} value={String(item)}>
+                      {item} хоног
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
+
               <Select value={quota} onValueChange={setQuota}>
-                <SelectTrigger className="w-full sm:w-[180px] bg-gray-700 text-white">
-                  <SelectValue placeholder="Filter by duration" />
+                <SelectTrigger className='w-full bg-white lg:w-[180px]'>
+                  <SelectValue placeholder='Дата хэмжээ' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Дата хэмжээ</SelectItem>
-                  {quotaArray &&
-                    quotaArray.map(
-                      (
-                        item,
-                        index, // Use 'data' if it's the source of your items
-                      ) => (
-                        <SelectItem key={index} value={item.toString()}>
-                          {item / 1000} GB
-                        </SelectItem>
-                      ),
-                    )}
+                  <SelectItem value='all'>Бүх дата</SelectItem>
+                  {quotaArray?.map((item) => (
+                    <SelectItem key={item} value={String(item)}>
+                      {item / 1000} GB
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-              </div>
-              {/* <div className='flex gap-2 w-full sm:w-auto justify-between sm:justify-end'>
-                <Button variant='outline' size='sm' className='h-9'>
-                  <Filter className='mr-2 h-4 w-4' />
-                  Шүүлтүүр
-                </Button>
-                <Button variant='ghost' size='sm' className='h-9' onClick={() => {
-                    setDays("all");
-                    setQuota("all");
-                }}>
-                  <X className='mr-2 h-4 w-4' />
-                  Цэвэрлэх
-                </Button>
-              </div> */}
             </div>
           </div>
         </section>
 
-        {/* Plans Section */}
+        {/* Package cards */}
         <section className='w-full py-8 md:py-12'>
           <div className='container mx-auto px-4 md:px-6'>
-            <Tabs defaultValue='grid' className='w-full'>
-              <div className='flex justify-between items-center mb-6'>
-                <h2 className='text-2xl font-bold'>Багцууд</h2>
-                {/* <TabsList>
-                  <TabsTrigger value='grid'>Хөндлөнгөөр</TabsTrigger>
-                </TabsList> */}
-              </div>
-              {/* List View */}
-              <TabsContent value='list' className='space-y-4'>
-                <div className='rounded-lg border overflow-hidden'>
-                  <div className='hidden md:grid md:grid-cols-6 bg-muted px-4 py-3 font-medium text-sm'>
-                    <div className='col-span-2'>Багц</div>
-                    <div>Дата</div>
-                    <div>Хугацаа</div>
-                    <div>Үнэ</div>
-                    <div className='text-right'>Үйлдэл</div>
-                  </div>
-                  <div className='divide-y'>
-                    {packages?.map((pkg) => (
-                      <div key={pkg.packageId} className='p-4'>
-                        <div className='md:grid md:grid-cols-6 md:items-center gap-4'>
-                          <div className='col-span-2 mb-2 md:mb-0'>
-                            <div className='flex items-center gap-2'>
-                              <h3 className='font-semibold'>{pkg.name}</h3>
-                              {pkg.isTrending === true && 
-                              <Badge className='bg-orange-500 text-white'>Эрэлттэй</Badge>
-                               }
-                              
-                              <Badge className={pkg.isPhysical === true ? 'bg-blue-500' : 'bg-green-500'}>
-                                {pkg.isPhysical === true ? 'Биет SIM' : 'eSIM'} 
-                              </Badge>
+            <div className='mb-6 flex items-center justify-between'>
+              <h2 className='text-2xl font-bold'>Багцууд</h2>
+              <span className='text-sm text-muted-foreground'>{packages.length} багц</span>
+            </div>
 
-                            </div>
-                            <p className='text-sm text-muted-foreground'>
-                              {pkg.name}
-                            </p>
-                          </div>
-                          <div className='flex md:block items-center justify-between mb-2 md:mb-0'>
-                            <span className='text-sm font-medium md:text-base'>
-                              
-                              {pkg.quota === 0 ? 'Хязгааргүй ∞' : `${pkg.quota / 1000} GB${pkg.isDaily === true ? '/өдөр' : ''}` }
-                              
-                            </span>
-                            <span className='md:hidden text-sm text-muted-foreground'>
-                              {pkg.coverages}
-                            </span>
-                          </div>
-                          <div className='flex md:block items-center justify-between mb-2 md:mb-0'>
-                            <span className='text-sm font-medium md:text-base'>
-                              {pkg.day} хоног
-                            </span>
-                            <span className='md:hidden text-sm text-muted-foreground'>
-                              Хугацаа
-                            </span>
-                          </div>
-                          <div className='flex md:block items-center justify-between mb-4 md:mb-0'>
-                            <span className='text-sm font-medium md:text-base'>
-                              {roundToNearestHundred(pkg.price)} ТӨГ
-                            </span>
-                            <span className='md:hidden text-sm text-muted-foreground'>
-                              ТӨГ
-                            </span>
-                          </div>
-                          <div className='md:text-right'>
-                            <Collapsible className='md:hidden mb-4'>
-                              <CollapsibleTrigger className='flex items-center text-sm text-primary'>
-                                Дэлгэрэнгүй
-                                <ChevronDown className='h-4 w-4 ml-1' />
-                              </CollapsibleTrigger>
-                              <CollapsibleContent className='mt-2 space-y-2'>
-                                <ul className='space-y-1'>
-                                  <li className='flex items-start gap-2 text-sm'>
-                                    <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                    <span>
-                                      {pkg.quota / 1000} GB өндөр хурдны дата
-                                    </span>
-                                  </li>
-                                  <li className='flex items-start gap-2 text-sm'>
-                                    <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                    <span>{pkg.day} хоног</span>
-                                  </li>
-                                  <li className='flex items-start gap-2 text-sm'>
-                                    <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                    <span>4G/LTE/5G</span>
-                                  </li>
-                                  <li className='flex items-start gap-2 text-sm'>
-                                    <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                    <span>{pkg.countryMn} дах сүлжээ</span>
-                                  </li>
-                                  <li className='flex items-start gap-2 text-sm'>
-                                    <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                    <span>24/7 харилцагчийн туслах</span>
-                                  </li>
-                                  <li className='flex items-start gap-2 text-sm'>
-                                    <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                    <span>Хялбар идэвхжүүлэлт</span>
-                                  </li>
-                                </ul>
-                              </CollapsibleContent>
-                            </Collapsible>
-                            <Button asChild className='w-full md:w-auto'>
-                              <Link href={`/checkout?package=${pkg.packageId}`}>
-                                Сонгох
-                              </Link>
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-              <TabsContent value='grid' className='space-y-4'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-                  {packages.map((pkg) => (
-                    <Card
-                      key={pkg.id}
-                      className={`flex flex-col bg-yellow-50 ${
-                        // pkg.popular ? 'border-primary' : ''
-                        'border-primary'
-                      }`}
-                    >
-                      <CardHeader>
-                        <div className='flex justify-between items-start'>
-                          <div>
-                            <CardTitle>{pkg.name}</CardTitle>
-                            <CardDescription>{pkg.name}</CardDescription>
-                          </div>
-                          {/* {pkg.popular && <Badge>Эрэлттэй</Badge>} */}
-                        </div>
-                        <div className='mt-4 flex items-baseline'>
-                          <span className='text-3xl font-bold'>
-                            {roundToNearestHundred(pkg.price)} ТӨГ
-                          </span>
-                          <span className='ml-1 text-sm text-muted-foreground'>
-                            / {pkg.day} хоног
-                          </span>
-                        </div>
-                      </CardHeader>
-                      <CardContent className='flex-1'>
-                        <div className='space-y-4'>
-                          <div className='flex items-center gap-2'>
-                            <Globe className='h-5 w-5 text-muted-foreground' />
-                            <span className='text-sm'>
-                              {pkg.companyName} Сүлжээ
-                            </span>
-                          </div>
-                          <div className='flex items-center gap-2'>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              viewBox='0 0 24 24'
-                              fill='none'
-                              stroke='currentColor'
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth='2'
-                              className='h-5 w-5 text-muted-foreground'
-                            >
-                              <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
-                            </svg>
-                            <span className='text-sm'>
-                              {pkg.quota / 1000} GB өндөр хурдны дата
-                            </span>
-                          </div>
-                          <Separator />
-                          <div>
-                            <h4 className='text-sm font-medium mb-2'>
-                              Багцанд:
-                            </h4>
-                            <ul className='space-y-2 text-sm'>
-                              <ul className='space-y-1'>
-                                <li className='flex items-start gap-2 text-sm'>
-                                  <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                  <span>
-                                    {pkg.quota / 1000} GB өндөр хурдны дата
-                                  </span>
-                                </li>
-                                <li className='flex items-start gap-2 text-sm'>
-                                  <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                  <span>{pkg.day} хоног</span>
-                                </li>
-                                <li className='flex items-start gap-2 text-sm'>
-                                  <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                  <span>4G/LTE/5G</span>
-                                </li>
-                                <li className='flex items-start gap-2 text-sm'>
-                                  <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                  <span>{pkg.countryMn} дах сүлжээ</span>
-                                </li>
-                                <li className='flex items-start gap-2 text-sm'>
-                                  <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                  <span>24/7 харилцагчийн туслах</span>
-                                </li>
-                                <li className='flex items-start gap-2 text-sm'>
-                                  <CheckCircle className='h-4 w-4 text-primary mt-0.5' />
-                                  <span>Хялбар идэвхжүүлэлт</span>
-                                </li>
-                              </ul>
-                            </ul>
-                            {/* {pkg.features.length > 4 && */}
-                            {/* <Accordion
-                              type='single'
-                              collapsible
-                              className='w-full'
-                            >
-                              <AccordionItem
-                                value='more-features'
-                                className='border-0'
-                              >
-                                <AccordionTrigger className='py-2 text-sm font-medium'>
-                                  Show more features
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                  <ul className='space-y-2 text-sm'>
-                                    <li
-                                      // key={index}
-                                      className='flex items-center'
-                                    >
-                                      <CheckCircle className='mr-2 h-4 w-4 text-primary' />
-                                      <span>feature</span>
-                                    </li>
-                                  </ul>
-                                </AccordionContent>
-                              </AccordionItem>
-                            </Accordion> */}
-                          </div>
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <Button className='w-full' asChild>
-                          <Link href={`/checkout?package=${pkg.id}`}>
-                            Сонгох
-                          </Link>
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
+            {packages.length === 0 ? (
+              <p className='py-16 text-center text-muted-foreground'>Таны шүүлтүүрт тохирох багц олдсонгүй.</p>
+            ) : (
+              <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
+                {packages.map((pkg) => (
+                  <PackageCard key={pkg.id} pkg={pkg} countryCode={countryId.toLowerCase()} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Coverage Details */}
-        <section id='coverage' className='w-full py-8 md:py-12 bg-muted'>
+        {/* Coverage details */}
+        <section id='coverage' className='w-full bg-muted py-8 md:py-12'>
           <div className='container mx-auto px-4 md:px-6'>
-            <div className='flex flex-col items-center justify-center space-y-4 text-center mb-8'>
-              <h2 className='text-2xl font-bold'>
-                {countryName} дах интернэт сүлжээ
-              </h2>
+            <div className='mb-8 flex flex-col items-center justify-center space-y-4 text-center'>
+              <h2 className='text-2xl font-bold'>{countryName} дах интернэт сүлжээ</h2>
               <p className='max-w-[700px] text-muted-foreground'>
                 Манай eSIM {countryName} даяар найдвартай интернэт холбогддог
               </p>
             </div>
-
-            <div className='grid gap-8 md:grid-cols-2'>
+            <div className='bg-background flex items-start gap-3 rounded-lg p-4'>
+              <Info className='mt-0.5 h-5 w-5 text-muted-foreground' />
               <div>
-                <div className='rounded-xl overflow-hidden h-[300px] relative'>
-                  <Image
-                    src={`/placeholder.svg?text=${countryName}+Coverage&height=600&width=800`}
-                    alt={`${countryName} Coverage Map`}
-                    fill
-                    className='object-cover'
-                  />
-                </div>
-              </div>
-              <div className='space-y-6'>
-                <div>
-                  <h3 className='text-xl font-bold mb-4'>Сүлжээ мэдээлэл</h3>
-                  <div className='space-y-4'>
-                    <div className='flex items-start gap-3'>
-                      <div className='w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5'>
-                        <CheckCircle className='h-4 w-4 text-primary' />
-                      </div>
-                      <div>
-                        <h4 className='font-medium'>Network Providers</h4>
-                        <p className='text-sm text-muted-foreground'>
-                          {coverageInfo.providers.join(', ')}
-                        </p>
-                      </div>
-                    </div>
-                    <div className='flex items-start gap-3'>
-                      <div className='w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5'>
-                        <CheckCircle className='h-4 w-4 text-primary' />
-                      </div>
-                      <div>
-                        <h4 className='font-medium'>Coverage Quality</h4>
-                        <p className='text-sm text-muted-foreground'>
-                          {coverageInfo.coverage}
-                        </p>
-                      </div>
-                    </div>
-                    <div className='flex items-start gap-3'>
-                      <div className='w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5'>
-                        <CheckCircle className='h-4 w-4 text-primary' />
-                      </div>
-                      <div>
-                        <h4 className='font-medium'>Санал болгож буй сүлжээ</h4>
-                        <p className='text-sm text-muted-foreground'>
-                          LTE, 4G, 5G
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className='bg-background p-4 rounded-lg flex items-start gap-3'>
-                  <Info className='h-5 w-5 text-muted-foreground mt-0.5' />
-                  <div>
-                    <h4 className='font-medium'>Анхаарах зүйлс</h4>
-                    <p className='text-sm text-muted-foreground'>
-                      Бид {countryName} улс дах маш сайн сүлжээга ашигладаг ч,
-                      зарим алслагдсан бүс нутагт холболт муу байж болно. Манай
-                      eSIM автоматаар хамгийн сайн интернетэд холбогдох болно.
-                    </p>
-                  </div>
-                </div>
+                <h4 className='font-medium'>Анхаарах зүйлс</h4>
+                <p className='text-sm text-muted-foreground'>
+                  Бид {countryName} улс дах маш сайн сүлжээг ашигладаг ч, зарим алслагдсан бүс нутагт холболт муу байж
+                  болно. Манай eSIM автоматаар хамгийн сайн интернетэд холбогдох болно.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* FAQ Section */}
         <FAQ />
 
-        {/* CTA Section */}
-        <section className='w-full py-8 md:py-12 bg-primary text-primary-foreground'>
+        {/* CTA */}
+        <section className='w-full bg-primary py-8 text-primary-foreground md:py-12'>
           <div className='container mx-auto px-4 md:px-6'>
             <div className='flex flex-col items-center justify-center space-y-4 text-center'>
               <div className='space-y-2'>
-                <h2 className='text-2xl font-bold'>
-                  Ready for Your Trip to {countryName}?
-                </h2>
+                <h2 className='text-2xl font-bold'>Ready for Your Trip to {countryName}?</h2>
                 <p className='max-w-[700px]'>
-                  Get your {countryName} eSIM now and enjoy seamless
-                  connectivity throughout your journey.
+                  Get your {countryName} eSIM now and enjoy seamless connectivity throughout your journey.
                 </p>
               </div>
               <div className='flex flex-col gap-2 min-[400px]:flex-row'>
@@ -704,7 +328,7 @@ export default function CountryDataPage() {
                 <Button
                   size='lg'
                   variant='outline'
-                  className='bg-transparent text-primary-foreground border-primary-foreground hover:bg-primary-foreground/10'
+                  className='border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/10'
                   asChild
                 >
                   <Link href='/contact'>Need Help?</Link>
