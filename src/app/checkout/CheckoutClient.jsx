@@ -139,7 +139,7 @@ const totalPrice =
   useEffect(() => {
     const fetchPackage = async () => {
       try {
-        const res = await callGet(`${apiList.ubsim}/${packageId}`)
+        const res = await callGet(`${apiList.ubsim}/detail/${packageId}`)
         setData(res?.data)
       } catch (error) {
         console.log(error)

@@ -518,7 +518,7 @@ export default function Page() {
                   Одоогийн үнэ: {formatMnt(savedPrice)}
                 </p>
 
-                <label htmlFor="sim-discount" className="mt-5 block text-sm font-medium">
+                {/* <label htmlFor="sim-discount" className="mt-5 block text-sm font-medium">
                   Discounted price <span className="font-normal text-slate-400">(optional)</span>
                 </label>
                 <div className="mt-2 flex items-center rounded-xl border border-slate-300 px-4 focus-within:border-slate-950 focus-within:ring-2 focus-within:ring-slate-950/10">
@@ -538,7 +538,7 @@ export default function Page() {
                 </div>
                 <p className="mt-2 text-xs text-slate-500">
                   Одоогийн хямдрал: {savedDiscount ? formatMnt(savedDiscount) : 'Байхгүй'}
-                </p>
+                </p> */}
 
                 {apiError && <p role="alert" className="mt-3 text-xs text-rose-600">{apiError}</p>}
 
