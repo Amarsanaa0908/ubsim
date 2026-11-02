@@ -305,7 +305,7 @@ export default function Page() {
       const res = await callPatch(`${apiList.ubsim}/update`, {
         id: selectedPlan.id,
         price: nextPrice,
-        [DISCOUNT_KEY]: nextDiscount,
+        // [DISCOUNT_KEY]: nextDiscount,
       })
 
       if (res?.status !== true) throw new Error('Update failed')
