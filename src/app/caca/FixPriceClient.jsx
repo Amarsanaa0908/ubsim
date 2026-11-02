@@ -290,13 +290,13 @@ export default function Page() {
 
     if (!isAuthorized || !selectedPlan) return
     if (!Number.isFinite(nextPrice) || nextPrice <= 0) return
-    if (
-      nextDiscount !== null &&
-      (!Number.isFinite(nextDiscount) || nextDiscount <= 0 || nextDiscount >= nextPrice)
-    ) {
-      setApiError('Discounted price must be greater than 0 and lower than the customer price.')
-      return
-    }
+    // if (
+    //   nextDiscount !== null &&
+    //   (!Number.isFinite(nextDiscount) || nextDiscount <= 0 || nextDiscount >= nextPrice)
+    // ) {
+    //   setApiError('Discounted price must be greater than 0 and lower than the customer price.')
+    //   return
+    // }
 
     setIsSaving(true)
     setApiError('')
