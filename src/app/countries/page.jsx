@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge, ChevronRight, Globe, MapPin, Search, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 const regions = [
   'Бүгд',
@@ -2788,7 +2788,20 @@ const countries = [
 export default function Countries() {
     const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('Бүгд');
-  const [filteredCountries, setFilteredCountries] = useState(countries);
+
+  const filteredCountries = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return countries.filter(
+      (c) =>
+        (selectedRegion === 'Бүгд' || c.region === selectedRegion) &&
+        (!query || c.name.toLowerCase().includes(query))
+    );
+  }, [searchQuery, selectedRegion]);
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedRegion('Бүгд');
+  };
 
   const getCountryFlagUrl = (countryName) => {
   const found = countries.find(
