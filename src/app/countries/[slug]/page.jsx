@@ -83,7 +83,8 @@ const formatMnt = (value) => {
 
         <div className='mt-5'>
           <h3 className='text-lg font-semibold text-slate-900'>
-            {pkg.country} - {pkg.quota === 0 ? 'Unlimited' : `${pkg.gb} GB`} {pkg.isDaily ? '/day' : `${pkg.day} days`}
+            {/* {pkg.country} - {pkg.quota === 0 ? 'Unlimited' : `${pkg.gb} GB`} {pkg.isDaily ? '/day' : `${pkg.day} days`} */}
+            {pkg.name}
           </h3>
           <p className='mt-1 flex items-center gap-1 text-sm text-blue-600'>
             <MapPin className='h-4 w-4' />
